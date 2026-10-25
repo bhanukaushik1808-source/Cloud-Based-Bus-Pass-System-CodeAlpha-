@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Application | Bus Pass System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f7fd;
+            color: #172b4d;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .navbar {
+            background: white;
+            padding: 16px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            box-shadow: 0 3px 18px rgba(15, 40, 80, 0.06);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            color: white;
+            font-size: 24px;
+            background: linear-gradient(135deg, #1261e8, #073b96);
+        }
+
+        .brand h2 {
+            font-size: 18px;
+            color: #0b1d38;
+        }
+
+        .brand p {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: #344563;
+        }
+
+        .nav-links a:hover {
+            color: #1261e8;
+        }
+
+        .main {
+            width: 100%;
+            max-width: 850px;
+            margin: 45px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        .page-heading {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .page-heading .icon {
+            width: 65px;
+            height: 65px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 16px;
+            border-radius: 18px;
+            background: #e2edff;
+            font-size: 32px;
+        }
+
+        .page-heading h1 {
+            font-size: clamp(26px, 4vw, 34px);
+            margin-bottom: 9px;
+            color: #0b1d38;
+        }
+
+        .page-heading p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border: 1px solid #e5edf7;
+            border-radius: 17px;
+            box-shadow: 0 9px 30px rgba(22, 54, 100, 0.06);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #718096;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 650;
+            margin-bottom: 8px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            height: 49px;
+            padding: 0 14px;
+            border: 1px solid #dce6f2;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1261e8;
+            box-shadow: 0 0 0 3px rgba(18, 97, 232, 0.1);
+        }
+
+        .primary-btn {
+            border: none;
+            border-radius: 9px;
+            background: #1261e8;
+            color: white;
+            padding: 0 22px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            min-height: 49px;
+        }
+
+        .primary-btn:hover {
+            background: #0b3d91;
+        }
+
+        .error {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 9px;
+            background: #fff0f0;
+            border: 1px solid #ffcaca;
+            color: #a42121;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .result {
+            margin-top: 25px;
+            border: 1px solid #e1eaf5;
+            border-radius: 13px;
+            overflow: hidden;
+        }
+
+        .result-header {
+            padding: 20px;
+            background: #f5f8ff;
+            border-bottom: 1px solid #e1eaf5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .result-header p {
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 4px;
+        }
+
+        .result-header h3 {
+            font-size: 20px;
+            color: #1261e8;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-approved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .result-body {
+            padding: 22px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .detail-label {
+            color: #718096;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #172b4d;
+            font-size: 14px;
+            font-weight: 650;
+            overflow-wrap: anywhere;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 13px 20px;
+            background: linear-gradient(100deg, #1261e8, #0750c8);
+            color: white;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 6px 15px rgba(18, 97, 232, 0.18);
+        }
+
+        .download-btn:hover {
+            background: #0b3d91;
+        }
+
+        .pending-note {
+            margin-top: 20px;
+            padding: 14px;
+            background: #fffbeb;
+            color: #92400e;
+            border-radius: 9px;
+            font-size: 13px;
+        }
+
+        .rejected-note {
+            margin-top: 20px;
+            padding: 14px;
+            background: #fff1f2;
+            color: #9f1239;
+            border-radius: 9px;
+            font-size: 13px;
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 22px 15px;
+            background: #091b36;
+            color: #dce6f5;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        @media (max-width: 560px) {
+            .navbar {
+                padding: 14px 5%;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: space-between;
+                gap: 10px;
+                font-size: 12px;
+            }
+
+            .main {
+                margin: 30px auto;
+                padding: 0 13px;
+            }
+
+            .card {
+                padding: 20px 16px;
+            }
+
+            .input-row {
+                flex-direction: column;
+            }
+
+            .primary-btn {
+                width: 100%;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 17px;
+            }
+
+            .result-body {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a class="brand" href="{{ url_for('home') }}">
+            <div class="brand-icon">🚌</div>
+            <div>
+                <h2>Bus Pass System</h2>
+                <p>Smart • Simple • Connected</p>
+            </div>
+        </a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('track_application') }}">Track Application</a>
+            <a href="{{ url_for('admin_login') }}">Admin Login</a>
+        </div>
+    </nav>
+
+    <main class="main">
+
+        <section class="page-heading">
+            <div class="icon">🔎</div>
+            <h1>Track Your Application</h1>
+            <p>Check your bus pass application status online.</p>
+        </section>
+
+        <section class="card">
+            <h2>Application Status</h2>
+            <p class="description">
+                Enter the Application ID you received after submitting your form.
+            </p>
+
+            <form method="POST" action="{{ url_for('track_application') }}">
+                <label for="application_id">Application ID</label>
+
+                <div class="input-row">
+                    <input
+                        type="text"
+                        id="application_id"
+                        name="application_id"
+                        placeholder="Example: BP0001"
+                        value="{{ request.form.get('application_id', '') }}"
+                        maxlength="20"
+                        required
+                    >
+
+                    <button type="submit" class="primary-btn">
+                        Track Status →
+                    </button>
+                </div>
+            </form>
+
+            {% if error %}
+                <div class="error" role="alert">
+                    ⚠️ {{ error }}
+                </div>
+            {% endif %}
+
+            {% if application %}
+                <section class="result">
+
+                    <div class="result-header">
+                        <div>
+                            <p>APPLICATION ID</p>
+                            <h3>BP{{ "%04d"|format(application["id"]) }}</h3>
+                        </div>
+
+                        <span class="status status-{{ application['status']|lower }}">
+                            {{ application["status"] }}
+                        </span>
+                    </div>
+
+                    <div class="result-body">
+                        <div class="details-grid">
+
+                            <div>
+                                <p class="detail-label">Applicant Name</p>
+                                <p class="detail-value">{{ application["full_name"] }}</p>
+                            </div>
+
+                            <div>
+                                <p class="detail-label">Bus Route</p>
+                                <p class="detail-value">{{ application["route"] }}</p>
+                            </div>
+
+                            <div>
+                                <p class="detail-label">Pass Type</p>
+                                <p class="detail-value">{{ application["pass_type"] }}</p>
+                            </div>
+
+                            <div>
+                                <p class="detail-label">Application Date</p>
+                                <p class="detail-value">{{ application["created_at"] }}</p>
+                            </div>
+
+                        </div>
+
+                        {% if application["status"] == "Approved" %}
+                            <a
+                                href="{{ url_for('download_bus_pass', application_id=application['id']) }}"
+                                class="download-btn"
+                            >
+                                ⬇ Download Bus Pass PDF
+                            </a>
+
+                        {% elif application["status"] == "Pending" %}
+                            <div class="pending-note">
+                                ⏳ Your application is under review. The download option
+                                will be available after approval.
+                            </div>
+
+                        {% elif application["status"] == "Rejected" %}
+                            <div class="rejected-note">
+                                Your application has been rejected. Please contact the
+                                relevant bus pass administrator for further information.
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </section>
+            {% endif %}
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        🚌 Cloud-Based Bus Pass Management System
+    </footer>
+
+</body>
+</html>

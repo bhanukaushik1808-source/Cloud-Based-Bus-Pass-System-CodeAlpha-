@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Pass Verification</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #eef4ff;
+            font-family: Arial, sans-serif;
+            color: #172b4d;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 480px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 { color: #12366b; }
+
+        .status {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .approved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .rejected, .invalid {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .detail {
+            padding: 13px 0;
+            border-bottom: 1px solid #e5eaf2;
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 5px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .value { font-size: 16px; font-weight: bold; }
+
+        .note {
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="card">
+        <h1>Bus Pass Verification</h1>
+
+        {% if application is none %}
+            <p class="status invalid">INVALID PASS</p>
+            <p>This bus pass was not found in the system.</p>
+        {% else %}
+
+            {% if application["status"] == "Approved" %}
+                <p class="status approved">APPROVED PASS</p>
+            {% elif application["status"] == "Rejected" %}
+                <p class="status rejected">REJECTED PASS</p>
+            {% else %}
+                <p class="status">PENDING APPROVAL</p>
+            {% endif %}
+
+            <div class="detail">
+                <span class="label">Pass ID</span>
+                <span class="value">BP{{ "%04d"|format(application["id"]) }}</span>
+            </div>
+
+            <div class="detail">
+                <span class="label">Pass Holder</span>
+                <span class="value">{{ application["full_name"] }}</span>
+            </div>
+
+            <div class="detail">
+                <span class="label">Route</span>
+                <span class="value">{{ application["route"] }}</span>
+            </div>
+
+            <div class="detail">
+                <span class="label">Pass Type</span>
+                <span class="value">{{ application["pass_type"] }}</span>
+            </div>
+
+            <div class="detail">
+                <span class="label">Start Date</span>
+                <span class="value">{{ application["start_date"] or "Not specified" }}</span>
+            </div>
+
+        {% endif %}
+
+        <p class="note">
+            This page shows the current status saved in the bus pass system.
+        </p>
+    </main>
+</body>
+</html>
