@@ -351,15 +351,15 @@ Open the application in your browser:
 
 **Home page**
 
-http://127.0.0.1:5000/
+http://65.2.37.2
 
 **Application tracking**
 
-http://127.0.0.1:5000/track
+http://65.2.37.2/track
 
 **Administrator login**
 
-http://127.0.0.1:5000/admin/login
+http://65.2.37.2/admin/login
 
 The application runs locally on port `5000`.
 
